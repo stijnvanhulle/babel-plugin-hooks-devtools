@@ -35,7 +35,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git://github.com/stijnvanhulle/babel-plugin-hooks-devtool.git"
+    "url": "git://github.com/stijnvanhulle/babel-plugin-hooks-devtools.git"
   },
   "author": "Stijn Van Hulle <stijn@stijnvanhulle.be",
   "license": "MIT",
