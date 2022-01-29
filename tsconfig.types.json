@@ -1,0 +1,11 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "declaration": true,
+    "declarationDir": "./types",
+    "emitDeclarationOnly": true,
+    "noEmit": false
+  },
+  "include": ["./src/index.ts", "./src/hooks/index.ts", "./src/**/typings.ts"],
+  "exclude": ["node_modules", "./src/**/_*/*", "**/*.test.*", "**/*.spec.*"]
+}

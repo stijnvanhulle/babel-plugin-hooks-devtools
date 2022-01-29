@@ -1,0 +1,7 @@
+{
+  "internal": true,
+  "main": "../lib/hooks/index.js",
+  "esnext": "../esnext/hooks/index.js",
+  "typings": "../types/hooks/index.d.ts",
+  "module": "../esnext/hooks/index.js"
+}

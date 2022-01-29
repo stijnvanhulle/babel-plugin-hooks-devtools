@@ -1,0 +1,21 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "esnext",
+    "outDir": "esnext",
+    "baseUrl": ".", 
+    "allowJs": true,
+    "jsx": "react-native"
+  },
+  "include": [
+    "./src/index.ts",
+    "./src/**/typings.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "./src/**/_*/*",
+    "**/*.test.*",
+    "**/*.spec.*",
+  ]
+}

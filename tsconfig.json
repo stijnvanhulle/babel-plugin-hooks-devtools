@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "module": "commonjs",
+    "outDir": "build",
+    "strict": true,
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "strictNullChecks": true,
+    "declaration": false,
+    "experimentalDecorators": true,
+    "skipLibCheck": true,
+    "baseUrl": ".",
+    "resolveJsonModule": true,
+    "allowJs": true,
+    "typeRoots": ["node_modules/@types", "typings"],
+    "types": ["node"],
+    "paths": {}
+  },
+  "include": ["./src/**/*"],
+  "exclude": ["node_modules"]
+}

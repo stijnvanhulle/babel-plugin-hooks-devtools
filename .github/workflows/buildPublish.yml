@@ -1,0 +1,110 @@
+name: Build package and publish
+
+on:
+  push:
+    branches:
+      - main
+      - 'releases/**'
+  pull_request:
+  workflow_dispatch:
+
+env:
+  NODE_VERSION: 'lts/*'
+  FOLDER: .
+
+defaults:
+  run:
+    working-directory: .
+
+jobs:
+  test:
+    name: 'Node ${{ matrix.node }}'
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node: ['lts/*']
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Use Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node }}
+          cache: 'yarn'
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Install dependencies
+        run: yarn
+
+      - name: Run unit tests
+        run: yarn test
+
+      - name: Run linter
+        run: yarn run lint
+
+  build:
+    name: 'Build package and publish'
+    needs: test
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 3
+
+      - name: Use Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'yarn'
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Install dependencies
+        run: yarn
+
+      - name: Version check
+        run: |
+          git config user.name "GitHub Actions Bot"
+          git config user.email "<>"
+          bash $GITHUB_WORKSPACE/.github/version.sh bump
+
+      - name: Creating .env file
+        uses: iamsauravsharma/create-dotenv@v1.2.0
+        with:
+          env-prefix: 'ENV_'
+          directory: ${{ env.FOLDER }}
+        env:
+          ENV_VERSION: ${{ env.VERSION }}
+
+      - name: Build package
+        run: yarn build
+
+      - name: Update package.json and changelog.md
+        working-directory: .
+        run: |
+          echo "Released version: $VERSION"
+          git push --follow-tags -v
+        env:
+          VERSION: ${{ env.VERSION }}
+
+      - name: Publish package on npm
+        run: yarn publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - uses: actions/setup-node@v2
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'yarn'
+          registry-url: 'https://npm.pkg.github.com'
+
+      - name: Publish package on Github
+        run: yarn publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Creating artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: lib
+          path: ./lib

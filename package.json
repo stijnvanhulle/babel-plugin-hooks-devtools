@@ -1,0 +1,97 @@
+{
+  "name": "@stijnvanhulle/babel-plugin-hooks-devtools",
+  "version": "0.1.0",
+  "description": "Babel plugin to debug useState and useEffect inside of the redux devtools",
+  "main": "lib/index.js",
+  "module": "es/index.js",
+  "esnext": "esnext/index.js",
+  "types": "types/index.d.ts",
+  "scripts": {
+    "start": "yarn build -- -w",
+    "build": "yarn run build:es && yarn run build:esnext && yarn run build:commonjs",
+    "build:es": "rimraf ./es && BABEL_ENV=es babel --copy-files --out-dir es --extensions .ts,.tsx --ignore '**/*.test.ts,**/__tests__/**' ./src",
+    "build:esnext": "rimraf ./esnext && tsc -p ./tsconfig.esnext.json",
+    "build:commonjs": "rimraf ./lib && BABEL_ENV=commonjs babel --copy-files --out-dir lib --extensions .ts,.tsx --ignore '**/*.test.ts,**/__tests__/**' ./src",
+    "build:types": "rimraf ./types && tsc -p ./tsconfig.types.json",
+    "postbuild": "yarn run build:types && yarn run rewrite-paths",
+    "rewrite-paths": "tsconfig-replace-paths -p ./tsconfig.json -s ./src -o ./esnext && tsconfig-replace-paths -p ./tsconfig.json -s ./src -o ./es && tsconfig-replace-paths -p ./tsconfig.json -s ./src -o ./lib",
+    "pack": "yarn build && yarn pack",
+    "transpile": "tsc -p ./tsconfig.json",
+    "typecheck": "tsc --noEmit",
+    "typecheck:watch": "yarn run typecheck -- --watch",
+    "lint": "tsc --noEmit && eslint '*/**/*.{js,ts,tsx}' --quiet --fix",
+    "test": "echo 'No test'",
+    "release": "standard-version",
+    "release:patch": "standard-version --release-as patch",
+    "release:minor": "standard-version --release-as minor",
+    "release:major": "standard-version --release-as major"
+  },
+  "files": [
+    "lib",
+    "es",
+    "esnext",
+    "types",
+    "hooks"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/stijnvanhulle/babel-plugin-hooks-devtool.git"
+  },
+  "author": "Stijn Van Hulle <stijn@stijnvanhulle.be",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public",
+    "@stijnvanhulle:registry": "https://npm.pkg.github.com"
+  },
+  "sideEffects": [
+    "es/index.js",
+    "esnext/index.js",
+    "lib/index.js"
+  ],
+  "peerDependencies": {
+    "react": ">=17.0.2",
+    "react-dom": ">=17.0.2"
+  },
+  "peerDependenciesMeta": {
+    "react-dom": {
+      "optional": true
+    },
+    "react": {
+      "optional": true
+    }
+  },
+  "dependencies": {
+    "@babel/generator": "^7.16.8",
+    "@babel/parser": "^7.16.12",
+    "babel-template": "^6.26.0",
+    "lodash": "^4.17.21"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.16.8",
+    "@babel/core": "^7.16.12",
+    "@babel/polyfill": "^7.12.1",
+    "@babel/preset-env": "^7.16.11",
+    "@babel/preset-typescript": "^7.16.7",
+    "@types/babel-template": "^6.25.2",
+    "@types/babel__core": "^7.1.18",
+    "@types/babel__generator": "^7.6.4",
+    "@types/lodash": "^4.14.178",
+    "@types/react": "^17.0.38",
+    "@typescript-eslint/eslint-plugin": "^5.10.1",
+    "@typescript-eslint/parser": "^5.10.1",
+    "eslint": "^8.8.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-babel": "^5.3.1",
+    "eslint-plugin-import": "^2.25.4",
+    "eslint-plugin-prettier": "^4.0.0",
+    "eslint-plugin-unused-imports": "^2.0.0",
+    "prettier": "^2.5.1",
+    "rimraf": "^3.0.2",
+    "standard-version": "^9.3.2",
+    "tsconfig-replace-paths": "^0.0.11",
+    "typescript": "^4.5.5"
+  },
+  "browserslist": [
+    "maintained node versions"
+  ]
+}
