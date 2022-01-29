@@ -1,6 +1,6 @@
 {
   "name": "@stijnvanhulle/babel-plugin-hooks-devtools",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Babel plugin to debug useState and useEffect inside of the redux devtools",
   "main": "lib/index.js",
   "module": "es/index.js",
