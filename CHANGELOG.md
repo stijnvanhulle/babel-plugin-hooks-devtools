@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### 0.1.2 (2022-01-29)
+
+
+### Bug Fixes
+
+* version bumping ([67c7707](https://github.com/stijnvanhulle/babel-plugin-hooks-devtools/commit/67c77078fb7c9c508443601c872fa447b9a10def))
+
 ### 0.1.1 (2022-01-29)
 
 
