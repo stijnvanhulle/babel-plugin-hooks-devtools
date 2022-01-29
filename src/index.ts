@@ -1,9 +1,11 @@
 import { isObject } from 'lodash';
+// eslint:disable-next-line
 import type * as BabelCoreNamespace from '@babel/core';
+// eslint:disable-next-line
 import type { PluginObj, PluginPass } from '@babel/core';
 
-import { transformCode, buildRequire } from './utils';
 import { NodePath } from '@babel/traverse';
+import { transformCode, buildRequire } from './utils';
 
 type Babel = typeof BabelCoreNamespace;
 
@@ -107,15 +109,12 @@ const programOnEnterFactory = (babel: Babel) => (path: Path, state: State) => {
           isObject(state) &&
           isObject((state as any).lineNoWhereCallNeedToBeAdded)
         ) {
-          (state as any).lineNoWhereCallNeedToBeAdded = Object.assign(
-            {},
-            (state as any).lineNoWhereCallNeedToBeAdded,
-            {
-              [commentObj.loc.start.line]: {
-                done: false,
-              },
-            }
-          );
+          (state as any).lineNoWhereCallNeedToBeAdded = {
+            ...(state as any).lineNoWhereCallNeedToBeAdded,
+            [commentObj.loc.start.line]: {
+              done: false,
+            },
+          };
         } else {
           state.lineNoWhereCallNeedToBeAdded = {
             [commentObj.loc.start.line]: {
@@ -157,14 +156,12 @@ const programOnEnterFactory = (babel: Babel) => (path: Path, state: State) => {
   }
 };
 
-export default (babel: Babel): PluginObj => {
-  return {
-    visitor: {
-      Identifier: identifierFactory(babel) as any,
-      Program: {
-        exit: () => {},
-        enter: programOnEnterFactory(babel) as any,
-      },
+export default (babel: Babel): PluginObj => ({
+  visitor: {
+    Identifier: identifierFactory(babel) as any,
+    Program: {
+      exit: () => {},
+      enter: programOnEnterFactory(babel) as any,
     },
-  };
-};
+  },
+});

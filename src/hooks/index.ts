@@ -1,3 +1,4 @@
+// eslint:disable-next-line
 const reduxDevtoolsExtension = (window as any).__REDUX_DEVTOOLS_EXTENSION__;
 const withDevTools = typeof window !== 'undefined' && reduxDevtoolsExtension;
 
@@ -28,7 +29,7 @@ export const useWhatChanged = (
 
   devtools?.send(actionName, {
     dependencies,
-    paths: paths.join('/'),
+    path: paths.join('/'),
     hookName,
   });
 };
